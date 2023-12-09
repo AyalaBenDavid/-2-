@@ -1,0 +1,60 @@
+<p-toolbar class="my-toolbar" styleClass="mb-4">
+    <ng-template pTemplate="right">
+        <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2"
+            (click)="addnew()"></button>
+        </ng-template>
+  
+</p-toolbar>
+
+<div class="my-css">
+    <p-table #dt [value]="presents" [rows]="5" [paginator]="true"
+        [globalFilterFields]="['name','contributor','cost']"  
+        [rowHover]="true" dataKey="id" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [showCurrentPageReport]="true">
+
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="width: 3rem">
+                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                    <tr>
+                        <th pSortableColumn="name">שם מוצר <p-sortIcon field="name"></p-sortIcon></th>
+                        <th pSortableColumn="cost">מחיר הכרטיס <p-sortIcon field="cost"></p-sortIcon></th>
+                        <th pSortableColumn="contributor">תורם המוצר <p-sortIcon field="contributor"></p-sortIcon></th>
+                        <th></th>
+                    </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-present>
+            <tr>
+    
+                <td>{{present.name}}</td>
+                <td>{{present.cost | currency:'ILS':'symbol-narrow'}}</td>
+                <!-- <td>{{pres.contributor}}</td> -->
+                <td>
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"
+                        (click)="editPresent(present.id)"></button>
+                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                        (click)="deletePresent(present.id)"></button>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+            <div class="flex align-items-center justify-content-between">
+                In total there are {{presents ? presents.length : 0 }} presents.
+            </div>
+        </ng-template>
+    </p-table>
+</div>
+
+<p-dialog  [(visible)]="showDialog" [style]="{width: '450px'}" header="Product Details" [modal]="true"
+    styleClass="p-fluid">
+
+    <app-addandedit [selectedPresent]="presents.currentPresnt
+    "
+    (closeDaialog)="showDialog = false;"
+    (updateDetails)="saveProduct($event)">
+   </app-addandedit>
+</p-dialog>
+
+
+<!-- <app-addandedit [presentId]="present.id" [(presentDialog)]="presentDialog"></app-addandedit>
+<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog> -->
